@@ -150,7 +150,7 @@ $ yarn clean
 Deploy the contracts to Hardhat Network:
 
 ```sh
-$ yarn deploy --greeting "Bonjour, le monde!"
+$ npx hardhat deploy:AAveWrapper --signer 0
 ```
 
 ## Tips
