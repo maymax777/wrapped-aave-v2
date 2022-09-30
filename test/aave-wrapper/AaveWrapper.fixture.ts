@@ -9,10 +9,9 @@ export async function deployAaveWrapperFixture(): Promise<{ aaveWrapper: AaveWra
   const admin: SignerWithAddress = signers[0];
 
   const AAVE_LENDING_POOL_CONTRACT: string = readContractAddress("aave-lending-pool");
-  const PROTOCOL_DATA_PROVIDER_CONTRACT: string = readContractAddress("protocol-data-provider");
   const aaveWrapperFactory: AaveWrapper__factory = <AaveWrapper__factory>await ethers.getContractFactory("AaveWrapper");
   const aaveWrapper: AaveWrapper = <AaveWrapper>(
-    await aaveWrapperFactory.connect(admin).deploy(AAVE_LENDING_POOL_CONTRACT, PROTOCOL_DATA_PROVIDER_CONTRACT)
+    await aaveWrapperFactory.connect(admin).deploy(AAVE_LENDING_POOL_CONTRACT)
   );
   await aaveWrapper.deployed();
 

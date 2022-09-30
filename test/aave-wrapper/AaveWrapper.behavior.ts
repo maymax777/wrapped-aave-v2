@@ -7,7 +7,7 @@ import { AaveWrapper } from "../../types";
 
 export function testAaveWrapperBehavior(): void {
   const inputWETHAmount = ethers.utils.parseEther("100");
-  const outputDAIAmount = ethers.utils.parseEther("1000");
+  const outputDAIAmount = ethers.utils.parseEther("10000");
 
   const runDepositAndBorrow = async (
     token0: Contract,
@@ -65,8 +65,46 @@ export function testAaveWrapperBehavior(): void {
     await this.aaveWrapper
       .connect(this.signers.bob)
       .payBackAndWithdraw(this.weth.address, inputWETHAmount, this.dai.address, outputDAIAmount);
-    // AaveWrapper: dai balance should be 0 and weth balance should be 100
+
+    // AaveWrapper: dai balance should be 0
     expect(await this.dai.balanceOf(this.aaveWrapper.address)).to.eq(0);
+    // Bob:  weth balance should be 100
     expect(await this.weth.balanceOf(this.signers.bob.address)).to.eq(inputWETHAmount);
+  });
+
+  it("reverts when there is at least one stake already", async function () {
+    await runDepositAndBorrow(
+      this.weth,
+      inputWETHAmount,
+      this.dai,
+      outputDAIAmount,
+      this.signers.bob,
+      this.aaveWrapper,
+    );
+
+    // await this.weth.connect(this.signers.bob).approve(this.aaveWrapper.address, inputWETHAmount);
+
+    await expect(
+      this.aaveWrapper
+        .connect(this.signers.bob)
+        .depositAndBorrow(this.weth.address, inputWETHAmount, this.dai.address, outputDAIAmount),
+    ).to.be.revertedWithCustomError(this.aaveWrapper, "AlreadyStaked");
+  });
+
+  it("reverts when another user tries to withdraw", async function () {
+    await runDepositAndBorrow(
+      this.weth,
+      inputWETHAmount,
+      this.dai,
+      outputDAIAmount,
+      this.signers.bob,
+      this.aaveWrapper,
+    );
+
+    await expect(
+      this.aaveWrapper
+        .connect(this.signers.andy)
+        .payBackAndWithdraw(this.weth.address, inputWETHAmount, this.dai.address, outputDAIAmount),
+    ).to.be.revertedWithCustomError(this.aaveWrapper, "InvalidInput");
   });
 }

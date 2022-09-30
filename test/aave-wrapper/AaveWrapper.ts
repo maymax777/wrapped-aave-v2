@@ -23,10 +23,11 @@ describe("Unit tests", function () {
     // Initialize signers wallets
     this.signers.admin = signers[0];
     this.signers.bob = signers[1];
+    this.signers.andy = signers[2];
     this.signers.daiWhale = await ethers.getSigner(DAI_WHALE);
 
     // Initialize DAI smart contract
-    this.dai = <IERC20>await ethers.getContractAt("IERC20", DAI_CONTRACT, this.signers.daiWhale);
+    this.dai = <IERC20>await ethers.getContractAt("IERC20", DAI_CONTRACT, this.signers.admin);
     this.weth = <IWETH>await ethers.getContractAt("IWETH", WETH_CONTRACT, this.signers.admin);
 
     this.loadFixture = loadFixture;

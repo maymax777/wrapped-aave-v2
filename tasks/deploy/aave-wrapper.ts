@@ -17,7 +17,7 @@ task("deploy:AaveWrapper")
       await ethers.getContractFactory("AaveWrapper", accounts[index])
     );
     const aaveWrapper: AaveWrapper = <AaveWrapper>(
-      await aaveWrapperFactory.deploy(cArguments.AAVE_LENDING_POOL_CONTRACT, cArguments.PROTOCOL_DATA_PROVIDER_CONTRACT)
+      await aaveWrapperFactory.deploy(cArguments.AAVE_LENDING_POOL_CONTRACT)
     );
     await aaveWrapper.deployed();
 

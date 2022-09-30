@@ -17,5 +17,6 @@ declare module "mocha" {
 export interface Signers {
   admin: SignerWithAddress;
   bob: SignerWithAddress;
+  andy: SignerWithAddress;
   daiWhale: SignerWithAddress;
 }
