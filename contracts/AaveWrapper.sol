@@ -8,8 +8,6 @@ import { SafeMath } from "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { ILendingPool } from "./interfaces/ILendingPool.sol";
 
-// import "./utils/Errors.sol";
-
 contract AaveWrapper is Ownable, Pausable {
     error AlreadyStaked();
     error InvalidInput();
